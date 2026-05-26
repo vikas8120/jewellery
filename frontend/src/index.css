@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #f5efe6;
+  background: #0a0908;
+}
+
+body {
+  @apply m-0 bg-noir text-ivory font-body;
+  background:
+    radial-gradient(1200px 550px at 12% -10%, rgba(201, 152, 92, 0.15), transparent 60%),
+    radial-gradient(950px 500px at 90% 0%, rgba(135, 98, 54, 0.12), transparent 62%),
+    linear-gradient(180deg, #f8f3ea 0%, #f5ece0 100%);
+}
+
+* {
+  @apply box-border;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+.glass-panel {
+  background: linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.gold-text {
+  background: linear-gradient(110deg, #f3e3c5, #c5a46d, #f5efe6, #c5a46d);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-title {
+  @apply font-display text-4xl md:text-5xl tracking-wide;
+}
+
+.premium-surface {
+  position: relative;
+}
+
+.premium-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(600px 180px at 0% 0%, rgba(203, 162, 111, 0.12), transparent 65%),
+    radial-gradient(500px 200px at 100% 100%, rgba(150, 112, 68, 0.1), transparent 65%);
+}
+
+.luxe-card {
+  position: relative;
+  border-radius: 1.5rem;
+  transform-style: preserve-3d;
+  transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+  box-shadow: 0 14px 28px rgba(63, 40, 15, 0.12), 0 2px 6px rgba(63, 40, 15, 0.08);
+}
+
+.luxe-card::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0.04) 40%, rgba(188,138,77,0.08));
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.luxe-card:hover {
+  transform: translateY(-5px) perspective(1100px) rotateX(2deg) rotateY(-2deg);
+  box-shadow: 0 26px 48px rgba(63, 40, 15, 0.2), 0 4px 10px rgba(63, 40, 15, 0.12);
+}
+
+.luxe-card:hover::after {
+  opacity: 1;
+}
+
+.luxe-button {
+  box-shadow: 0 8px 20px rgba(176, 130, 68, 0.35), inset 0 1px 0 rgba(255,255,255,0.35);
+  transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+}
+
+.luxe-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(176, 130, 68, 0.45), inset 0 1px 0 rgba(255,255,255,0.4);
+  filter: saturate(1.05);
+}
+
+@media (max-width: 640px) {
+  .section-title {
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+
+  #home h1 {
+    font-size: 2.3rem !important;
+    line-height: 1.15 !important;
+  }
+}
