@@ -46,6 +46,16 @@ const initialProducts = [
   { id: 6, name: 'Auric Promise Band', category: 'Rings', price: 1740, rating: 4, image: '/products/auric-promise-band.jpg' }
 ]
 
+const fallbackProductImage = '/products/celeste-diamond-halo-ring.jpg'
+const normalizeImagePath = (value) => {
+  const v = String(value || '').trim()
+  if (!v) return fallbackProductImage
+  if (v.startsWith('data:image/')) return v
+  if (v.startsWith('http://') || v.startsWith('https://')) return v
+  if (v.startsWith('/')) return v
+  return `/${v.replace(/^\/+/, '')}`
+}
+
 const whyChooseUs = [
   { title: 'Certified Quality', detail: 'BIS hallmarked gold and conflict-free certified diamonds.', icon: ShieldCheck },
   { title: 'Premium Craftsmanship', detail: 'Master artisans sculpt every piece with obsessive precision.', icon: Gem },
@@ -126,7 +136,7 @@ function App() {
   })
 
   const isDark = false
-  const heroImage = content?.heroImageLight || '/waterheroimage2.jpg'
+  const heroImage = normalizeImagePath(content?.heroImageLight || '/waterheroimage2.jpg')
 
   useEffect(() => {
     if (!authRole) return
@@ -150,7 +160,11 @@ function App() {
           api.testimonials.list(authRole === 'admin'),
           api.whyChooseUs.list(authRole === 'admin')
         ])
-        setProducts(productsRes.length ? productsRes : initialProducts)
+        const resolvedProducts = (productsRes.length ? productsRes : initialProducts).map((p) => ({
+          ...p,
+          image: normalizeImagePath(p.image)
+        }))
+        setProducts(resolvedProducts)
         setCategoriesData(categoriesRes)
         setContent(homepageRes)
         setContactSettings(settingsRes)
@@ -793,7 +807,7 @@ function App() {
 
             <div className="relative animate-float">
               <div className="absolute -inset-6 rounded-[2rem] bg-gold/20 blur-3xl" />
-              <img src={heroImage} alt="Luxury jewellery" className="relative w-full rounded-[2rem] border border-white/15 object-cover shadow-glass" />
+              <img src={heroImage} alt="Luxury jewellery" onError={(e) => { e.currentTarget.src = '/waterheroimage2.jpg' }} className="relative w-full rounded-[2rem] border border-white/15 object-cover shadow-glass" />
             </div>
           </div>
         </section>
@@ -850,7 +864,7 @@ function App() {
               return (
               <article key={productId} className={`luxe-card group overflow-hidden rounded-3xl border shadow-glass ${isDark ? 'border-white/10 bg-ebony/80' : 'border-[#e1ccb0] bg-white/85 shadow-[0_16px_30px_rgba(100,74,42,0.14)]'}`}>
                 <div className="relative h-56 overflow-hidden sm:h-64">
-                  <img src={p.image} alt={p.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  <img src={normalizeImagePath(p.image)} alt={p.name} onError={(e) => { e.currentTarget.src = fallbackProductImage }} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                   <button onClick={() => toggleWishlist(productId)} className={`absolute right-4 top-4 rounded-full border p-2 ${isDark ? 'border-white/20 bg-noir/70' : 'border-[#d8c0a0] bg-white/80'}`}>
                     <Heart size={17} className={wishlist[productId] ? 'fill-gold text-gold' : isDark ? 'text-ivory' : 'text-[#694b2b]'} />
                   </button>
