@@ -136,7 +136,7 @@ function App() {
   })
 
   const isDark = false
-  const heroImage = normalizeImagePath(content?.heroImageLight || '/waterheroimage2.jpg')
+  const heroVideo = '/hero-video.mp4'
 
   useEffect(() => {
     if (!authRole) return
@@ -785,29 +785,35 @@ function App() {
             </div>
           </section>
         )}
-        <section id="home" className={isDark ? 'bg-hero' : 'bg-[linear-gradient(135deg,#f8f2e8_0%,#f1e4d2_52%,#e8d3b4_100%)]'}>
-          <div className="mx-auto grid w-full max-w-[1500px] items-center gap-10 px-5 py-16 md:grid-cols-2 md:px-8 md:py-24">
-            <div className="animate-fadeUp">
-              <p className="mb-4 text-sm uppercase tracking-[0.35em] text-champagne/90">Fine Luxury Jewellery</p>
-              <h1 className="font-display text-5xl leading-tight md:text-7xl">
+        <section id="home" className="relative min-h-screen overflow-hidden">
+          <video
+            className="absolute inset-0 h-full w-full object-cover object-center"
+            src={heroVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(24,18,13,0.72)_0%,rgba(24,18,13,0.5)_38%,rgba(24,18,13,0.18)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(255,224,176,0.12),transparent_28%),linear-gradient(180deg,rgba(0,0,0,0.16),rgba(0,0,0,0.38))]" />
+          <div className="relative mx-auto flex min-h-screen w-full max-w-[1500px] items-center px-5 py-20 md:px-8">
+            <div className="max-w-3xl animate-fadeUp">
+              <p className="mb-4 text-sm uppercase tracking-[0.35em] text-[#f2d7a3]/90">Fine Luxury Jewellery</p>
+              <h1 className="max-w-2xl font-display text-5xl leading-tight text-[#fff8ef] md:text-7xl">
                 {(content?.heroTitle || 'Timeless Jewellery')} <span className="gold-text">Crafted for Elegance</span>
               </h1>
-              <p className={`mt-6 max-w-xl text-base leading-relaxed md:text-lg ${isDark ? 'text-ivory/75' : 'text-[#4b3a2e]'}`}>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-[#f2e7d8] md:text-lg">
                 {content?.heroSubtitle || 'Discover handcrafted heirloom pieces in ethically sourced gold and diamonds, designed to celebrate every precious chapter of your story.'}
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <a href="#products" className="luxe-button rounded-full border border-gold bg-gold px-7 py-3 text-sm font-semibold uppercase tracking-widest text-noir shadow-gold transition hover:-translate-y-0.5 hover:bg-champagne">
                   {content?.heroButtonText || 'Shop Collection'}
                 </a>
-                <a href="#collections" className={`rounded-full border px-7 py-3 text-sm font-semibold uppercase tracking-widest transition ${isDark ? 'border-white/25 text-ivory hover:border-champagne hover:text-champagne' : 'border-[#ab844e] text-[#6b4c25] hover:bg-[#ab844e] hover:text-white'}`}>
+                <a href="#collections" className="rounded-full border border-[#d9b67d] px-7 py-3 text-sm font-semibold uppercase tracking-widest text-[#f8ebd7] transition hover:bg-[#d9b67d] hover:text-[#2b1e14]">
                   Explore Designs
                 </a>
               </div>
-            </div>
-
-            <div className="relative animate-float">
-              <div className="absolute -inset-6 rounded-[2rem] bg-gold/20 blur-3xl" />
-              <img src={heroImage} alt="Luxury jewellery" onError={(e) => { e.currentTarget.src = '/waterheroimage2.jpg' }} className="relative w-full rounded-[2rem] border border-white/15 object-cover shadow-glass" />
             </div>
           </div>
         </section>
