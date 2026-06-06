@@ -16,7 +16,7 @@ import {
   X
 } from 'lucide-react'
 
-const brandName = 'Aurelia Jewels'
+const brandName = 'Kriscel Jewels'
 
 const navLinks = [
   { label: 'Home', href: '#home' },
@@ -66,7 +66,7 @@ const whyChooseUs = [
 const testimonials = [
   { name: 'Ananya Rao', text: 'The finishing is extraordinary. My bracelet feels like couture on the wrist.', role: 'Mumbai' },
   { name: 'Sophia Grant', text: 'Luxurious packaging, flawless quality, and impeccable craftsmanship.', role: 'New York' },
-  { name: 'Ishita Malhotra', text: 'Aurelia has become my go-to for milestone jewellery pieces.', role: 'Delhi' }
+  { name: 'Ishita Malhotra', text: 'Kriscel has become my go-to for milestone jewellery pieces.', role: 'Delhi' }
 ]
 
 function App() {
@@ -195,6 +195,23 @@ function App() {
     }
     loadAdminData()
   }, [authRole, authToken])
+
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll('.zoom-section'))
+    if (!elements.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('is-visible')
+        })
+      },
+      { threshold: 0.18, rootMargin: '0px 0px -8% 0px' }
+    )
+
+    elements.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [authRole, showAdminLogin])
 
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
@@ -541,7 +558,7 @@ function App() {
 
       <main className="premium-surface">
         {authRole !== 'admin' && showAdminLogin && (
-          <section className="mx-auto w-full max-w-[1500px] px-5 pt-8 md:px-8">
+          <section className="zoom-section mx-auto w-full max-w-[1500px] px-5 pt-8 md:px-8">
             <form onSubmit={onLoginSubmit} className={`mx-auto max-w-xl rounded-3xl border p-6 md:p-8 ${isDark ? 'border-gold/40 bg-[linear-gradient(140deg,#1a120b,#120d09)]' : 'border-[#c9a36b] bg-[linear-gradient(120deg,#fff6e8,#f6e5c8)]'}`}>
               <h2 className="font-display text-3xl">Admin Sign In</h2>
               <div className="mt-4 grid gap-3">
@@ -554,7 +571,7 @@ function App() {
           </section>
         )}
         {authRole === 'admin' && (
-          <section className="mx-auto w-full max-w-[1500px] px-5 pt-8 md:px-8">
+          <section className="zoom-section mx-auto w-full max-w-[1500px] px-5 pt-8 md:px-8">
             <div className={`rounded-3xl border p-6 md:p-8 ${isDark ? 'border-gold/40 bg-[linear-gradient(140deg,#1a120b,#120d09)]' : 'border-[#c9a36b] bg-[linear-gradient(120deg,#fff6e8,#f6e5c8)]'}`}>
               <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
@@ -785,7 +802,7 @@ function App() {
             </div>
           </section>
         )}
-        <section id="home" className="relative min-h-screen overflow-hidden">
+        <section id="home" className="zoom-section relative min-h-screen overflow-hidden">
           <video
             className="absolute inset-0 h-full w-full object-cover object-center"
             src={heroVideo}
@@ -818,7 +835,7 @@ function App() {
           </div>
         </section>
 
-        <section id="collections" className="mx-auto w-full max-w-[1500px] px-5 py-16 md:px-8">
+        <section id="collections" className="zoom-section mx-auto w-full max-w-[1500px] px-5 py-16 md:px-8">
           <h2 className="section-title">{content?.featuredSectionTitle || 'Featured Categories'}</h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {(categoriesData.length ? categoriesData : featuredCategories.map((c) => ({ name: c.name, icon: 'Gem' }))).filter((c) => c.isVisible !== false).map((item) => {
@@ -832,7 +849,7 @@ function App() {
           </div>
         </section>
 
-        <section id="products" className="mx-auto w-full max-w-[1500px] px-5 py-12 md:px-8">
+        <section id="products" className="zoom-section mx-auto w-full max-w-[1500px] px-5 py-12 md:px-8">
           <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 className="section-title">{content?.newArrivalsSectionTitle || 'Curated New Arrivals'}</h2>
             <div className={`flex w-full max-w-md items-center rounded-full border px-4 py-2 ${isDark ? 'border-white/15 bg-ebony' : 'border-[#d8c0a0] bg-white/85'}`}>
@@ -892,7 +909,7 @@ function App() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1500px] px-5 py-12 md:px-8">
+        <section className="zoom-section mx-auto w-full max-w-[1500px] px-5 py-12 md:px-8">
           <div className={`luxe-card rounded-3xl border p-8 shadow-gold md:p-12 ${isDark ? 'border-gold/30 bg-banner' : 'border-[#d8bd98] bg-[linear-gradient(120deg,#fff5e7,#efd8b7)]'}`}>
             <p className="text-sm uppercase tracking-[0.35em] text-champagne/80">{content?.bannerText || 'Premium Collection'}</p>
             <h2 className="mt-4 font-display text-4xl leading-tight md:text-5xl">{content?.premiumTitle || 'The Imperial Heirloom Edit'}</h2>
@@ -901,7 +918,7 @@ function App() {
           </div>
         </section>
 
-        <section id="about" className="mx-auto w-full max-w-[1500px] px-5 py-16 md:px-8">
+        <section id="about" className="zoom-section mx-auto w-full max-w-[1500px] px-5 py-16 md:px-8">
           <h2 className="section-title">Why Choose Us</h2>
           <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {(whyChooseUsData.length ? whyChooseUsData : whyChooseUs).filter((item) => item.isVisible !== false).map((item) => {
@@ -917,7 +934,7 @@ function App() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1500px] px-5 py-12 md:px-8">
+        <section className="zoom-section mx-auto w-full max-w-[1500px] px-5 py-12 md:px-8">
           <h2 className="section-title">What Our Clients Say</h2>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {(testimonialsData.length ? testimonialsData : testimonials).filter((item) => item.isVisible !== false).map((item) => (
@@ -935,10 +952,10 @@ function App() {
           </div>
         </section>
 
-        <section id="contact" className="mx-auto w-full max-w-5xl px-5 py-14 md:px-8">
+        <section id="contact" className="zoom-section mx-auto w-full max-w-5xl px-5 py-14 md:px-8">
           <div className={`rounded-3xl border p-8 text-center shadow-glass md:p-12 ${isDark ? 'border-white/15 bg-ebony' : 'border-[#dfc8aa] bg-white/85 shadow-[0_12px_28px_rgba(86,61,35,0.12)]'}`}>
             <Mail className="mx-auto text-gold" size={32} />
-            <h2 className="mt-4 font-display text-4xl md:text-5xl">Join The Aurelia Circle</h2>
+            <h2 className="mt-4 font-display text-4xl md:text-5xl">Join The Kriscel Circle</h2>
             <p className={`mx-auto mt-4 max-w-2xl ${isDark ? 'text-ivory/75' : 'text-[#4b3a2e]'}`}>Receive first access to signature launches, private previews, and member-only offers.</p>
             <form onSubmit={(e) => {
               e.preventDefault()
@@ -963,7 +980,7 @@ function App() {
         </section>
       </main>
 
-      <footer className={`border-t ${isDark ? 'border-white/10 bg-black/60' : 'border-[#d8c0a0] bg-[#f3e5d1]/75'}`}>
+      <footer className={`zoom-section border-t ${isDark ? 'border-white/10 bg-black/60' : 'border-[#d8c0a0] bg-[#f3e5d1]/75'}`}>
         <div className="mx-auto grid w-full max-w-[1500px] gap-8 px-5 py-10 md:grid-cols-4 md:px-8">
           <div>
             <p className="font-display text-3xl gold-text">{brandName}</p>
@@ -977,7 +994,7 @@ function App() {
           </div>
           <div>
             <h4 className="font-semibold text-champagne">Contact</h4>
-            <p className={`mt-3 text-sm ${isDark ? 'text-ivory/70' : 'text-[#604427]'}`}>{contactSettings?.businessEmail || 'care@aureliajewels.com'}</p>
+            <p className={`mt-3 text-sm ${isDark ? 'text-ivory/70' : 'text-[#604427]'}`}>{contactSettings?.businessEmail || 'Info@kriscel.com'}</p>
             <p className={`text-sm ${isDark ? 'text-ivory/70' : 'text-[#604427]'}`}>{contactSettings?.phone || '+1 (212) 555-0188'}</p>
             <p className={`text-sm ${isDark ? 'text-ivory/70' : 'text-[#604427]'}`}>{contactSettings?.address || 'Fifth Avenue, New York'}</p>
           </div>

@@ -1,7 +1,13 @@
 const STORAGE_KEY = 'aurelia-local-db-v1'
+const LEGACY_AURELIA_SETTINGS = {
+  businessEmail: 'care@aureliajewels.com',
+  phone: '+1 (212) 555-0188',
+  address: 'Fifth Avenue, New York',
+  footerDescription: 'Fine jewellery crafted with timeless artistry and modern luxury.'
+}
 
 const defaultDb = {
-  admins: [{ _id: 'admin-1', name: 'Aurelia Admin', email: 'admin@aurelia.com', password: 'admin123' }],
+  admins: [{ _id: 'admin-1', name: 'Kriscel Admin', email: 'admin@kriscel.com', password: 'admin123' }],
   products: [
     { _id: 'p1', name: 'Celeste Diamond Halo Ring', categoryName: 'Rings', price: 2890, rating: 5, image: '/products/celeste-diamond-halo-ring.jpg', description: 'Signature halo ring.', featured: true, newArrival: true, premiumCollection: true, sortOrder: 1, status: 'Active', isVisible: true },
     { _id: 'p2', name: 'Regalia Pear Pendant', categoryName: 'Necklaces', price: 2460, rating: 4, image: '/products/regalia-pear-pendant.jpg', description: 'Pear-cut pendant.', featured: false, newArrival: true, premiumCollection: true, sortOrder: 2, status: 'Active', isVisible: true },
@@ -30,10 +36,10 @@ const defaultDb = {
     premiumSubtitle: 'Limited-edition masterpieces with rare cuts, bespoke settings, and ceremonial elegance for extraordinary moments.'
   },
   settings: {
-    businessEmail: 'care@aureliajewels.com',
-    phone: '+1 (212) 555-0188',
-    address: 'Fifth Avenue, New York',
-    footerDescription: 'Fine jewellery crafted with timeless artistry and modern luxury.',
+    businessEmail: 'Info@kriscel.com',
+    phone: '+91 8985419420',
+    address: '229, BHARTHAL, SECTOR - 26, DWARKA, South West Delhi, Delhi, 110077',
+    footerDescription: 'Pushing the boundaries of technology and design to create high-performance digital experiences.',
     quickLinksText: ['Home', 'Collections', 'New Arrivals', 'About', 'Contact'],
     instagram: '',
     facebook: '',
@@ -44,7 +50,7 @@ const defaultDb = {
   testimonials: [
     { _id: 't1', customerName: 'Ananya Rao', reviewText: 'The finishing is extraordinary. My bracelet feels like couture on the wrist.', rating: 5, role: 'Mumbai', isVisible: true },
     { _id: 't2', customerName: 'Sophia Grant', reviewText: 'Luxurious packaging, flawless quality, and impeccable craftsmanship.', rating: 5, role: 'New York', isVisible: true },
-    { _id: 't3', customerName: 'Ishita Malhotra', reviewText: 'Aurelia has become my go-to for milestone jewellery pieces.', rating: 5, role: 'Delhi', isVisible: true }
+    { _id: 't3', customerName: 'Ishita Malhotra', reviewText: 'Kriscel has become my go-to for milestone jewellery pieces.', rating: 5, role: 'Delhi', isVisible: true }
   ],
   whyChooseUs: [
     { _id: 'w1', title: 'Certified Quality', description: 'BIS hallmarked gold and conflict-free certified diamonds.', icon: 'ShieldCheck', isVisible: true },
@@ -63,6 +69,12 @@ function readDb() {
   try {
     const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
     if (!parsed || typeof parsed !== 'object') return { ...defaultDb }
+    const parsedSettings = parsed.settings && typeof parsed.settings === 'object' ? parsed.settings : {}
+    const legacySettingsDetected =
+      parsedSettings.businessEmail === LEGACY_AURELIA_SETTINGS.businessEmail &&
+      parsedSettings.phone === LEGACY_AURELIA_SETTINGS.phone &&
+      parsedSettings.address === LEGACY_AURELIA_SETTINGS.address &&
+      parsedSettings.footerDescription === LEGACY_AURELIA_SETTINGS.footerDescription
     return {
       ...defaultDb,
       ...parsed,
@@ -73,7 +85,19 @@ function readDb() {
       whyChooseUs: Array.isArray(parsed.whyChooseUs) ? parsed.whyChooseUs : defaultDb.whyChooseUs,
       inquiries: Array.isArray(parsed.inquiries) ? parsed.inquiries : [],
       newsletters: Array.isArray(parsed.newsletters) ? parsed.newsletters : [],
-      favoritesByUser: parsed.favoritesByUser && typeof parsed.favoritesByUser === 'object' ? parsed.favoritesByUser : {}
+      favoritesByUser: parsed.favoritesByUser && typeof parsed.favoritesByUser === 'object' ? parsed.favoritesByUser : {},
+      settings: {
+        ...defaultDb.settings,
+        ...parsedSettings,
+        ...(legacySettingsDetected
+          ? {
+              businessEmail: defaultDb.settings.businessEmail,
+              phone: defaultDb.settings.phone,
+              address: defaultDb.settings.address,
+              footerDescription: defaultDb.settings.footerDescription
+            }
+          : {})
+      }
     }
   } catch {
     return { ...defaultDb }
