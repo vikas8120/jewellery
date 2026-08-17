@@ -804,7 +804,8 @@ function App() {
         )}
         <section id="home" className="zoom-section relative min-h-screen overflow-hidden">
           <video
-            className="absolute inset-0 h-full w-full object-cover object-center"
+            className="absolute inset-0 w-full object-cover object-top"
+            style={{ height: '115%', top: 0, bottom: 'auto' }}
             src={heroVideo}
             autoPlay
             muted
